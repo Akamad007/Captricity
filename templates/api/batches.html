@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+
+{% block body %}
+	
+        <!-- Latest work -->
+        <div class="work-container">
+	        <div class="container">
+	        	<div class="row">
+	        		
+	        		{% if batches %}
+	        			<h1 style="color:white;"> List of Batches Uploaded </h1>
+	        		{% endif %}
+		            <div class="col-sm-12 wow fadeIn">
+		            	<table class="table table-bordered">
+		            	   <tbody>
+		            	   		{% if success_batches %}
+		            	   			 <th>  Name </th>
+							         <th>  Status </th>
+							         <th>  Success Status </th>	
+							          <th>  Date Time </th>	
+							          <th>  View </th>	
+		            	   		{% endif %}
+			        			{% for batch in success_batches %}			        							        				  						        					        				
+				        			<tr>					        				
+								       
+							               <td>  {{ batch.name }} </td>
+							               <td> {{ batch.status }}</td>
+							               <td>  {{ batch.success }}</td>
+							               <td>  {{ batch.dateTime }}</td>
+							               <td>  <a href="/api/batch/{{ batch.id }}/">	View Details  </a> </td>		               	
+							          			        				
+				        			</tr>				        				        							        							        						
+			        			{% endfor %}
+	        				</tbody>	
+	        			</table>  
+		             </div>
+		              <div class="col-sm-12 wow fadeIn">
+		            	<table class="table table-bordered">
+		            	   <tbody>
+		            	   		{% if failure_batches %}
+		            	   			 <th>  Name </th>
+							         <th>  Status </th>
+							         <th>  Success Status </th>	
+							          <th>  Date Time </th>	
+							          <th>  View </th>	
+		            	   		{% endif %}
+			        			{% for batch in failure_batches %}			        							        				  						        					        				
+				        			<tr>					        				
+								       
+							               <td>  {{ batch.name }} </td>
+							               <td> {{ batch.status }}</td>
+							               <td>  {{ batch.success }}</td>
+							               <td>  {{ batch.dateTime }}</td>
+							               <td>  <a href="/api/batch/{{ batch.id }}/">	View Details  </a> </td>		               	
+							          			        				
+				        			</tr>				        				        							        							        						
+			        			{% endfor %}
+	        				</tbody>	
+	        			</table>  
+		             </div>
+		             
+		             
+	        </div>
+	        </div>
+        </div>
+
+     
+	
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+	
+
+{% block body %}
+<style>
+body{
+	background-image: url("/media/img/main.jpg");
+	 background-size: 100%;
+}
+</style>
+	   <!-- Contact Us -->
+	   
+	   <h1 id="demo-header">
+	               Add an image
+	    </h1>
+        <div class="contact-us-container">
+        	<div class="container">
+	            <div class="row">
+	             <div class="col-sm-5">
+	             		{% for image in images %}
+	             			<div class="col-sm-3">
+			                <div class="work wow fadeInUp">
+			                   	<img alt="{{ image.title }}" src="/media/{{ image.image }}">
+			                   
+			                   
+			                    <div class="work-bottom">
+			                        <a class="big-link-2 view-work" href="/media/{{ image.image }}"><i class="fa fa-search"></i></a>
+			                       
+			                    </div>
+			                </div>
+		                </div>	             			             	        
+	             		{% endfor %}
+	             
+	             </div>
+	                <div class="col-sm-7 contact-form wow fadeInRight">
+	                   
+	                    <form role="form" action="" method="post" enctype="multipart/form-data">
+	                    
+	                      {% csrf_token %}
+	                      
+	                		{% if image %}
+	                      <div class="col-sm-2">
+	                      	<div class="work wow fadeInUp">
+			                   	<img alt="{{ image.title }}" src="/media/{{ image.image }}">
+			                    <h3>{{ image.title }}</h3>			                   			                    
+			                </div>
+			               </div>
+	                      {% endif %}
+	                    	<div class="col-sm-10" >
+		                    	{% for field in imageForm %}
+		                    	
+		                    	<div class="form-group">	                    			                   	                    			
+			                    	<label>{{ field.label }}</label>	
+			                    	<div class="errors"> {{ field.errors }}</div>
+			                        	{{ field }}
+		                        </div>
+		                    	
+		                    	{% endfor %}
+		                    	 <button type="submit" class="btn">Create</button>
+	                  		</div>
+	                  		
+	                       
+	                       
+	                       
+	                    </form>
+	                </div>
+	          
+	            </div>
+	        </div>
+        </div>
+	
+
+{% endblock %}

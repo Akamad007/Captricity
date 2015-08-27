@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block navigation %}
+
+{% endblock %}
+{% block body %}
+	   <!-- Contact Us -->
+	   
+<style>
+body{
+	background-image: url("/media/img/main.jpg");
+	 background-size: 100%;
+}
+</style>
+  <h1 id="demo-header">
+	                    	Captricity Demo Signup
+	    </h1>
+        <div class="contact-us-container">
+        	<div class="container">
+	            <div class="row">
+	             <div class="col-sm-5">
+	             </div>
+	                <div class="col-sm-7 contact-form wow fadeInRight">
+	                    
+	                    <form role="form" action="" method="post">
+	                    	
+	                    	 {% csrf_token %}
+	                    	{% for field in signupForm %}
+		                    	<div class="form-group">	                    			                   	                    			
+		                    		<label>{{ field.label }}</label>
+		                    	<div class="errors"> {{ field.errors }}</div>
+		                        	{{ field }}
+		                        </div>
+	                    	
+	                    	{% endfor %}
+	                      
+	                        <button type="submit" class="btn">Create Account</button>
+	                        <br /> <br /> <br />
+	                        <a href="/login/"> Login Page</a>
+	                        
+	                    </form>
+	                </div>
+	          
+	            </div>
+	        </div>
+        </div>
+	
+	
+
+{% endblock %}

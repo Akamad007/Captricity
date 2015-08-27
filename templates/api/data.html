@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+
+{% block body %}
+	
+        <!-- Latest work -->
+        <div class="work-container">
+	        <div class="container">
+	        	<div class="row">
+	        		<div class="col-sm-12 wow fadeIn">
+	        		
+	        			<a href="/api/viewall/"> <button type="button" class="btn">View all batches</button></a>
+	        			
+	        			<a><h3>{{ batch.name }} : {{ batch.status }} : {{ batch.success }} :{{ batch.dateTime }}</h3></a>
+	        			<table class="table table-bordered">
+	        			{% for da in data %}
+	        				
+	        				{% if forloop.first %}
+		        				<thead>
+			        				<tr>
+				        				{% for d in da %}
+				        					<th> {{ d }} </th>
+				        				{% endfor %}
+			        				</tr> 
+		        				</thead>    		
+		        			{% else %}
+		        				<tbody>
+		        					<tr>
+			        				{% for d in da %}
+			        					<td> {{ d }} </td>
+			        				{% endfor %}
+		        					</tr>
+		        				</tbody>		        				
+	        				{% endif %}
+	        						
+	        			{% endfor %}
+	        			</table>
+	        		
+	        		</div>
+	        		
+		 
+	        </div>
+	        </div>
+        </div>
+
+     
+	
+{% endblock %}

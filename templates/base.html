@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Captricity Demo</title>
+		<link rel="icon" type="image/ico" href="https://captricity.com/static/images/favicon.ico">
+        <!-- CSS -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster">
+        <link rel="stylesheet" href="/media/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/media/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/media/css/animate.css">
+        <link rel="stylesheet" href="/media/css/magnific-popup.css">
+        <link rel="stylesheet" href="/media/css/flexslider.css">
+        <link rel="stylesheet" href="/media/css/form-elements.css">
+        <link rel="stylesheet" href="/media/css/style.css">
+        <link rel="stylesheet" href="/media/css/media-queries.css">
+
+ 
+
+    </head>
+
+    <body>
+    {% block navigation %}
+        
+        <!-- Top menu -->
+		<nav class="navbar" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<h1><a href="/home/">Captricity</a></h1>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="top-navbar-1">
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
+								<i class="fa fa-user"></i><br>{{ user }}
+							</a>
+							<ul class="dropdown-menu dropdown-menu-left" role="menu">
+								<li><a href="/login/logout">Logout</a></li>
+							
+							</ul>
+						</li>
+					
+				
+					</ul>
+				</div>
+			</div>
+		</nav>
+	{% endblock %}
+	{% include "message.html" %}
+      	{% block body %}
+
+		
+		{% endblock %}
+
+        <!-- Footer -->
+    
+
+        <!-- Javascript -->
+        <script src="/media/js/jquery-1.11.1.min.js"></script>
+        <script src="/media/js/bootstrap.min.js"></script>
+        <script src="/media/js/bootstrap-hover-dropdown.min.js"></script>
+        <script src="/media/js/jquery.backstretch.min.js"></script>
+        <script src="/media/js/wow.min.js"></script>
+        <script src="/media/js/retina-1.1.0.min.js"></script>
+        <script src="/media/js/jquery.magnific-popup.min.js"></script>
+        <script src="/media/js/jquery.flexslider-min.js"></script>
+        <script src="/media/js/jflickrfeed.min.js"></script>
+        <script src="/media/js/masonry.pkgd.min.js"></script>
+       
+        <script src="/media/js/jquery.ui.map.min.js"></script>
+    
+        <script src="/media/js/style.js"></script>
+        <script src="/media/js/scripts.js"></script>
+
+    </body>
+
+</html>

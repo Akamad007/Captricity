@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+
+{% block body %}
+	
+        <!-- Latest work -->
+        <div class="work-container">
+	        <div class="container">
+	        	<div class="row">
+	        		<div class="col-sm-12 wow fadeIn">
+	        		
+	        			<a href="/api/viewall/"> <button type="button" class="btn">View all batches</button></a>
+	        			{% if batch.success %}
+	        				&nbsp;&nbsp;&nbsp;
+	        				<a href="/api/data/{{ batch.id }}/">
+	        					 <button type="button" class="btn">View data</button>
+	        				</a>	        		
+	        			{% endif %}	
+	        			<a><h3>{{ batch.name }} : {{ batch.status }} : {{ batch.success }} :{{ batch.dateTime }}</h3></a>
+	        		</div>
+	        		
+		            <div class="col-sm-12 wow fadeIn">
+		            	<div class="col-sm-8">
+			               {% for imageObject in  images %}
+			               <div class="col-sm-3">
+				                <div class="work wow fadeInUp">
+				                   	<img alt="{{ imageObject.image.title }}" src="/media/{{ imageObject.image.image }}">
+				                    <h3>{{ imageObject.image.title }}</h3>
+				                   
+				                    <div class="work-bottom">
+				                        <a class="big-link-2 view-work" href="/media/{{ imageObject.image.image }}"><i class="fa fa-search"></i></a>
+				                  				                				                      
+				                    </div>
+				                </div>
+			                </div>	 
+			               		
+			               {% endfor %}
+		               </div>
+		               <div class="col-sm-4">
+		               </div>
+		             </div>
+	        </div>
+	        </div>
+        </div>
+
+     
+	
+{% endblock %}

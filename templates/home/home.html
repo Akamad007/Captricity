@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+
+{% block body %}
+	
+        <!-- Latest work -->
+        <div class="work-container">
+	        <div class="container">
+	        	<div class="row">
+	        		<h1>
+	        			<a href="/home/create/"> <button type="button" class="btn">Add Images</button></a>
+	        			<a href="/api/addall/"> <button type="button" class="btn">Upload all images to Batch</button></a>
+	        			<a href="/api/viewall/"> <button type="button" class="btn">View all batches</button></a>
+	        		</h1>
+	        		{% if images %}
+		            <div class="col-sm-12 work-title wow fadeIn">
+		                <h2>Latest Images added</h2>
+		              
+			              {% for image in images %}
+	             			<div class="col-sm-3">
+				                <div class="work wow fadeInUp">
+				                   	<img alt="{{ image.title }}" src="/media/{{ image.image }}">
+				                    <h3>{{ image.title }}</h3>
+				                   
+				                    <div class="work-bottom">
+				                        <a class="big-link-2 view-work" href="/media/{{ image.image }}"><i class="fa fa-search"></i></a>
+				                        <h3>
+				                        	<a  href="/home/delete/{{ image.id }}/">Delete</a>&nbsp;&nbsp;
+				                       	 	<a  href="/home/edit/{{ image.id }}/">Update</a>
+				                       	 	<br />
+				                        	<a  href="/api/add/{{ image.id }}/">Add to Batch</a>
+				                        	
+				                        
+				                        </h3>				                				                      
+				                    </div>
+				                </div>
+			                </div>	             			             	        
+	             		
+		                {% endfor %}
+		                
+		            </div>
+		            {% endif %}
+	            </div>
+	            <div class="row">
+	            	
+	            </div>
+	        </div>
+        </div>
+
+       <br /><br /><br /><br /><br /><br />
+	
+{% endblock %}

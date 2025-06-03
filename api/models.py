@@ -7,7 +7,7 @@ from home.models import HomeImages
 
 class ApiBatch(models.Model):
     name = models.CharField(max_length = 300)
-    user = models.ForeignKey(User)   
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.TextField(null = True, blank = True)
     submit = models.TextField(null = True, blank = True)
     progress = models.CharField(max_length = 300, null = True, blank = True)     
@@ -21,13 +21,13 @@ class ApiBatch(models.Model):
             return str(self.success)+" | "+str(self.id)
     
 class ApiBatchImage(models.Model):
-    batch = models.ForeignKey(ApiBatch)
-    image = models.ForeignKey(HomeImages)        
+    batch = models.ForeignKey(ApiBatch, on_delete=models.CASCADE)
+    image = models.ForeignKey(HomeImages, on_delete=models.CASCADE)
     dateTime = models.DateTimeField(auto_now_add = True)
     
     
 class ApiBatchData(models.Model):
-    batch = models.ForeignKey(ApiBatch)
+    batch = models.ForeignKey(ApiBatch, on_delete=models.CASCADE)
     text = models.TextField()
     dateTime = models.DateTimeField(auto_now_add = True)
     

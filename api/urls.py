@@ -1,11 +1,10 @@
-from django.conf.urls.defaults import *
+from django.urls import path
+from . import views
 
-
-urlpatterns = patterns('api.views',
-    # Examples:
-    url(r'^add/(\w+)/$', 'add'), 
-    url(r'^addall/$', 'addall'),  
-    url(r'^viewall/$', 'view_all_batches'),  
-    url(r'^batch/(\w+)/$', 'view_batch'),    
-    url(r'^data/(\w+)/$', 'data'), 
-)
+urlpatterns = [
+    path('add/<int:id>/', views.add, name='add'),
+    path('addall/', views.addall, name='addall'),
+    path('viewall/', views.view_all_batches, name='view_all_batches'),
+    path('batch/<int:id>/', views.view_batch, name='view_batch'),
+    path('data/<int:id>/', views.data, name='data'),
+]

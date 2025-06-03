@@ -15,7 +15,7 @@ def logout(request):
 
 def login(request):
     
-    if request.user.is_anonymous():
+    if request.user.is_anonymous:
         if request.method == "POST":
             loginForm = LoginForm(request.POST)
             if loginForm.is_valid():
@@ -32,8 +32,9 @@ def login(request):
     else:
         return HttpResponseRedirect("/home/")
 
+
 def signup(request):
-    if request.user.is_anonymous():
+    if request.user.is_anonymous:
         if request.method == "POST":
             signupForm = SignUpForm(request.POST)
             if signupForm.is_valid():
@@ -45,9 +46,9 @@ def signup(request):
                 user = User.objects.create_user(userName, userMail, password)
                 user.save() 
                                        
-                login(request)
+                django_login(request, user)
                 messages.success(request, "User account created succesfully")
-                return HttpResponseRedirect('/home')
+                return HttpResponseRedirect('/home/')
             else:
                 messages.error(request, "Please check the entered form")
         else:

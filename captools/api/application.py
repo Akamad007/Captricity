@@ -1,19 +1,19 @@
-import urllib
+import urllib.parse
+from urllib.parse import urlencode, parse_qs
 import webbrowser
-import urlparse
-import BaseHTTPServer
-import SocketServer
+import http.server
+import socketserver
 import re
 
-from util import generate_request_access_signature
+from .util import generate_request_access_signature
 
 
 _API_TOKEN = ""
 
-class CallbackHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+class CallbackHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         global _API_TOKEN
-        parsed_query = urlparse.parse_qs(re.sub(r'^/\?', '', self.path))
+        parsed_query = parse_qs(re.sub(r'^/\?', '', self.path))
         if 'request-granted' in parsed_query:
             _API_TOKEN = parsed_query['token'][0]
             body = "Request granted: Your API token is %s" % _API_TOKEN
@@ -22,7 +22,7 @@ class CallbackHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.send_response(200, 'OK')
         self.send_header('Content-type', 'html')
         self.end_headers()
-        self.wfile.write("<html><head><title>Captricity API Token</title></head><body>%s</body></html>" % body)
+        self.wfile.write(b"<html><head><title>Captricity API Token</title></head><body>%s</body></html>" % body.encode())
 
 class ThirdPartyApplication(object):
     def __init__(self, third_party_id, secret_key, endpoint='https://shreddr.captricity.com', port=None):
@@ -40,12 +40,12 @@ class ThirdPartyApplication(object):
         params['signature'] = generate_request_access_signature(
                 params, 
                 self.secret_key)
-        login_url += '?' + urllib.urlencode(params)
+        login_url += '?' + urlencode(params)
         return login_url
 
     def manually_authorize_application(self):
         # First find out what port is free, in case we are letting the os choose port (self.port = 0)
-        server = SocketServer.TCPServer(('', self.port), CallbackHandler)
+        server = socketserver.TCPServer(('', self.port), CallbackHandler)
         selected_port = server.server_address[1]
 
         callback_url = "http://localhost:" + str(selected_port)

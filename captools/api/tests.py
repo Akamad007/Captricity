@@ -2,8 +2,8 @@
 
 import random
 import unittest
-import urllib2
-import simplejson as json
+import urllib.request
+import json
 
 from client import Client, parse_date_string
 
@@ -15,7 +15,7 @@ class TestClient(unittest.TestCase):
 
     def setUp(self):
         self.endpoint = 'http://127.0.0.1:8000/api/backbone/schema'
-        self.schema = json.loads(urllib2.urlopen(self.endpoint).read())
+        self.schema = json.loads(urllib.request.urlopen(self.endpoint).read().decode())
 
     def test_client_connection(self):
         i = 0
@@ -63,7 +63,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(len(jobs) > 0)
         completed_jobs = [job for job in jobs if job['status'] == 'completed']
         if len(completed_jobs) == 0:
-            print 'There are no completed jobs so I can not test data-sets.'
+            print('There are no completed jobs so I can not test data-sets.')
             return
         completed_job = completed_jobs[0]
         datasets = client.read_datasets(completed_job['id'])

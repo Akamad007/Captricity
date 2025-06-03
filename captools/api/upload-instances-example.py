@@ -12,7 +12,7 @@ def main():
     parser.add_argument('--endpoint', required=True, help='the URL to the API definition resource, like https://shreddr.captricity.com/api/backbone/schema')
     parser.add_argument('--apitoken', required=True, help='the api token associated with your Captricity account')
     parser.add_argument('--job', required=True, type=int, help='the ID number for the job resource')
-    parser.add_argument('image', type=file, nargs='+', help='image files which you would like to upload')
+    parser.add_argument('image', type=argparse.FileType('rb'), nargs='+', help='image files which you would like to upload')
 
     args = parser.parse_args()
 
@@ -21,7 +21,7 @@ def main():
 
     # Fetch the job to make sure that it exists and to get its display name
     job = client.read_job(args.job)
-    print 'Uploading images to job "%s"' % job['name']
+    print('Uploading images to job "%s"' % job['name'])
 
     # We need to group the instance images into instance sets. To do so, we need to find the page count of the form that is used for the job
     # We take advantage of the fact that the job's document resource metadata is included in the metadata for the job
@@ -34,10 +34,10 @@ def main():
         # We will also name the image sets by the first image in the set
         # Also store the new instance set so we know which one to post images to
         iset = client.create_instance_sets(job['id'], {'name': args.image[i].name})
-        print 'Uploading image set', i
+        print('Uploading image set', i)
         # We will then upload each image to the image set in order until the image set is full
         for page_number, image in enumerate(args.image[i*page_count:(i*page_count)+page_count]):
-            print '\t', image.name
+            print('\t', image.name)
             client.create_iset_instance(iset['id'], page_number, {'image' : image, 'image_name' : image.name})
 
 if __name__ == '__main__': main()

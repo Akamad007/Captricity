@@ -23,7 +23,7 @@ def add(request, id):
     batch_id = create_or_get_batch(client,BATCH_NAME)        
     documents = client.read_documents()
     
-    document_id = filter(lambda x: x['name'] == CAPTRICITY_TEMPLATE_NAME, documents).pop()['id']
+    document_id = [x for x in documents if x["name"] == CAPTRICITY_TEMPLATE_NAME].pop()['id']
     client.update_batch(batch_id, { 'documents': document_id, 'name': BATCH_NAME })
     f = open(image.image.url, 'rb')
     batch_file = client.create_batch_files(batch_id, {'uploaded_file': f})
@@ -33,7 +33,7 @@ def add(request, id):
         batchObject.submit = submit(client,batch_id)
         batchObject.success = True
         messages.success(request, "The image was successfully added to batch "+batchObject.name)
-    except Exception, e:
+    except Exception as e:
         batchObject.status = str(e)
         batchObject.submit = ""
         batchObject.success = False
@@ -56,7 +56,7 @@ def create_or_get_batch(client, BATCH_NAME):
         pass
     
     batches = client.read_batches()
-    batch_id = filter(lambda x: x['name'] == BATCH_NAME, batches).pop()['id']
+    batch_id = [x for x in batches if x["name"] == BATCH_NAME].pop()['id']
     batch = client.read_batch(batch_id)
     return batch_id
 
@@ -86,7 +86,7 @@ def addall(request):
     batch_id = create_or_get_batch(client,BATCH_NAME)        
     documents = client.read_documents()
     
-    document_id = filter(lambda x: x['name'] == CAPTRICITY_TEMPLATE_NAME, documents).pop()['id']
+    document_id = [x for x in documents if x["name"] == CAPTRICITY_TEMPLATE_NAME].pop()['id']
     client.update_batch(batch_id, { 'documents': document_id, 'name': BATCH_NAME })
     batchObject = ApiBatch.objects.create(name=BATCH_NAME,user = request.user)
   
@@ -104,7 +104,7 @@ def addall(request):
         batchObject.submit = submit(client,batch_id)
         batchObject.success = True
         messages.success(request, "All images were successfully added to batch "+batchObject.name+" total images "+str(images.count()))
-    except Exception, e:
+    except Exception as e:
         batchObject.status = str(e)
         batchObject.submit = ""
         batchObject.success = False

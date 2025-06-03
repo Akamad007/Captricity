@@ -8,20 +8,19 @@ See https://shreddr.captricity.com/developer/#authentication for more informatio
 """
 import argparse
 import webbrowser
-import urllib
-import urlparse
-import BaseHTTPServer
-import SocketServer
+import urllib.parse
+import http.server
+import socketserver
 import re
 
 from util import generate_request_access_signature
 
 API_TOKEN = ""
 
-class CallbackHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+class CallbackHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         global API_TOKEN
-        parsed_query = urlparse.parse_qs(re.sub(r'^/\?', '', self.path))
+        parsed_query = urllib.parse.parse_qs(re.sub(r'^/\?', '', self.path))
         if 'request-granted' in parsed_query:
             API_TOKEN = parsed_query['token'][0]
             body = "Request granted: Your API token is %s" % API_TOKEN
@@ -30,7 +29,7 @@ class CallbackHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.send_response(200, 'OK')
         self.send_header('Content-type', 'html')
         self.end_headers()
-        self.wfile.write("<html><head><title>Captricity API Token</title></head><body>%s</body></html>" % body)
+        self.wfile.write(("<html><head><title>Captricity API Token</title></head><body>%s</body></html>" % body).encode())
 
 def main():
     parser = argparse.ArgumentParser(description='Authenticate user and obtain an API token to access the Captricity API. Assumes that you have already registered an application on Captricity.\nSee https://shreddr.captricity.com/developer/#register for more info.')
@@ -48,13 +47,13 @@ def main():
             'third-party-id' : args.client_id
     }
     params['signature'] = generate_request_access_signature(params, args.client_secret_key)
-    login_url += '?' + urllib.urlencode(params)
+    login_url += '?' + urllib.parse.urlencode(params)
 
     webbrowser.open(login_url)
 
-    SocketServer.TCPServer(('', int(args.port)), CallbackHandler).handle_request()
+    socketserver.TCPServer(('', int(args.port)), CallbackHandler).handle_request()
 
-    print 'Your API token is:', API_TOKEN
+    print('Your API token is:', API_TOKEN)
 
 if __name__ == '__main__': main()
 

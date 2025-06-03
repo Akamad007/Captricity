@@ -32,16 +32,16 @@ def main():
     # Create a new instance set in the target job
     iset = client.create_instance_sets(TARGET_JOB_ID, {'name':'test_iset'})
     iset_id = iset['id']
-    print 'Created InstanceSet %s in Job %s' % (iset_id, TARGET_JOB_ID)
+    print('Created InstanceSet %s in Job %s' % (iset_id, TARGET_JOB_ID))
 
     # Upload (the same) image for each page of the instance set
     for page_number in range(iset['sheet_count']):
         payload = {'image':open(IMAGE_PATH), 'image_name':'test_instance'}
         inst = client.create_iset_instance(iset_id, page_number, payload)
-        print '\tUploaded Instance %s as page %s of InstanceSet %s' % (
+        print('\tUploaded Instance %s as page %s of InstanceSet %s' % (
                 inst['id'],
                 page_number,
-                iset_id)
+                iset_id))
 
 
 if __name__ == '__main__': main()

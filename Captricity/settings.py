@@ -189,8 +189,12 @@ BATCH_NAME = "AkashDeshpande"
 
 
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
-import djcelery
-djcelery.setup_loader()
+try:
+    import djcelery
+    djcelery.setup_loader()
+except Exception:
+    # Allow tests to run without djcelery installed
+    djcelery = None
 BROKER_URL = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'

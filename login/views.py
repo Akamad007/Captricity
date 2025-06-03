@@ -24,7 +24,7 @@ def login(request):
                 user = authenticate(username=username, password=password)
                 if user is not None:                   
                         django_login(request, user)
-                        messages.success(request, "Successfull logged in")
+                        messages.success(request, "Successfully logged in")
                         return HttpResponseRedirect("/home/")    
         else:
             loginForm = LoginForm()
@@ -45,7 +45,7 @@ def signup(request):
                 user = User.objects.create_user(userName, userMail, password)
                 user.save() 
                                        
-                login(request)
+                django_login(request, user)
                 messages.success(request, "User account created succesfully")
                 return HttpResponseRedirect('/home')
             else:

@@ -27,13 +27,13 @@ Installation
 The following tools are needed for the installation and working of this application.  
 Install python pip. Which is a package manager.  
 Using pip install the following packages.  
-Django==1.5 
-django­celery==3.1.10 
-django­celery­email==1.0.4 
-django­debug­toolbar==1.3.2 
-django­redis==4.2.0 
-django­reset==0.2.0 
-redis==2.10.3 
+Django==5.2.1
+django-celery==3.3.1
+django-celery-email==3.0.0
+django-debug-toolbar==5.2.0
+django-redis==5.4.0
+django-reset==0.2.0
+redis==6.2.0
  
 Make sure you have the latest redis server instance running on the default port. We are using 
 redis as the messaging queue. Celery is being used to run asynchronous tasks.  
@@ -43,12 +43,12 @@ redis as the messaging queue. Celery is being used to run asynchronous tasks.
 
 To start the application open terminal. 
 Make sure all the packages are installed using pip.  
-Go in the application folder. Run the command “python manage.py runserver “ 
-This will start the application.  
-Start a new terminal tab. Run the command “python manage.py celery beat” 
-This command will start the celery periodic scheduler. This command queues all the 
-celery periodic tasks. 
-7. Start a new terminal tab. Run the command “ python manage.py celery worker” 
-8. This command starts the celery worker and will start executing the tasks queued in the 
-celery scheduler. 
-9. You can start using the application by going to the link localhost:8000. 
+1. Go in the application folder. Run the command “python manage.py runserver”
+2. This will start the application.
+3. Start a new terminal tab. Run the command “python manage.py celery beat”
+4. This command will start the celery periodic scheduler. This command queues all the
+   celery periodic tasks.
+5. Start a new terminal tab. Run the command “python manage.py celery worker”
+6. This command starts the celery worker and will start executing the tasks queued in the
+   celery scheduler.
+7. You can start using the application by going to the link localhost:8000.

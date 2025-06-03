@@ -14,7 +14,7 @@ def get_photo_storage_path(photo_obj, filename):
 
 class HomeImages(models.Model):
     image = models.ImageField(upload_to = get_photo_storage_path)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, blank = True, null= True)
     title = models.CharField(max_length = 200, blank = True, null= True)
     is_active = models.BooleanField(default = True)

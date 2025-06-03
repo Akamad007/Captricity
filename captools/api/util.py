@@ -1,5 +1,5 @@
 import os
-from urllib import urlencode
+from urllib.parse import urlencode
 from hashlib import sha256
 
 def generate_request_access_signature(parameters, secret_key):
@@ -7,10 +7,7 @@ def generate_request_access_signature(parameters, secret_key):
     Generate the parameter signature used during third party access requests
     """
     # pull out the parameter keys
-    keys = parameters.keys()
-
-    # alphanumerically sort the keys in place
-    keys.sort()
+    keys = sorted(parameters)
 
     # create an array of url encoded key:value pairs
     encoded_pairs = [urlencode({key:parameters[key]}) for key in keys] 
@@ -25,7 +22,8 @@ def generate_request_access_signature(parameters, secret_key):
     return sha256(string_to_hash).hexdigest()
 
 _example_form_image_paths = ['page1.png', 'page2.png']
-_example_form_image_paths = map(
-        lambda x: os.path.join(os.path.dirname(__file__), 'img', x),
-        _example_form_image_paths)
-example_form_image_paths = map(lambda x: os.path.abspath(x), _example_form_image_paths)
+_example_form_image_paths = [
+        os.path.join(os.path.dirname(__file__), 'img', x)
+        for x in _example_form_image_paths
+]
+example_form_image_paths = [os.path.abspath(x) for x in _example_form_image_paths]

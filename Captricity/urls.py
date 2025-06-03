@@ -1,29 +1,17 @@
-from django.conf.urls import patterns, include, url
-from Captricity.settings import OUR_APPS, MEDIA_ROOT, STATIC_ROOT
-
-# Uncomment the next two lines to enable the admin:
 from django.contrib import admin
-admin.autodiscover()
+from django.urls import include, path
+from django.conf import settings
+from django.views.static import serve
 
-urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'Captricity.views.home', name='home'),
-    # url(r'^Captricity/', include('Captricity.foo.urls')),
-    url(r'^$', include('home.urls')),
-    # Uncomment the admin/doc line be    low to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+urlpatterns = [
+    path('', include('home.urls')),
+    path('admin/', admin.site.urls),
+]
 
-    # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
-)
-for apps in OUR_APPS:
-    urlpatterns += patterns('',      
-     url(r'^'+apps+'/', include(apps+'.urls')),
-    )
-urlpatterns += patterns('',
-        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {
-        'document_root': MEDIA_ROOT}))
+for app in settings.OUR_APPS:
+    urlpatterns.append(path(f'{app}/', include(f'{app}.urls')))
 
-urlpatterns += patterns('',
-        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {
-        'document_root': STATIC_ROOT}))
+urlpatterns += [
+    path('media/<path:path>/', serve, {'document_root': settings.MEDIA_ROOT}),
+    path('static/<path:path>/', serve, {'document_root': settings.STATIC_ROOT}),
+]

@@ -54,7 +54,7 @@ def main():
 
     SocketServer.TCPServer(('', int(args.port)), CallbackHandler).handle_request()
 
-    print 'Your API token is:', API_TOKEN
+    print('Your API token is:', API_TOKEN)
 
 if __name__ == '__main__': main()
 

@@ -63,7 +63,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(len(jobs) > 0)
         completed_jobs = [job for job in jobs if job['status'] == 'completed']
         if len(completed_jobs) == 0:
-            print 'There are no completed jobs so I can not test data-sets.'
+            print('There are no completed jobs so I can not test data-sets.')
             return
         completed_job = completed_jobs[0]
         datasets = client.read_datasets(completed_job['id'])

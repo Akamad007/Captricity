@@ -67,10 +67,10 @@ class Client(object):
         keyfunc = lambda x: (x.resource_name, x.__doc__.strip())
         resources = groupby(sorted(filter(lambda x: (hasattr(x, 'is_api_call') and x.is_api_call and x.is_supported_api), [getattr(self, resource) for resource in dir(self)]), key=keyfunc), key=keyfunc)
         for resource_desc, resource_methods in resources:
-            print resource_desc[0]
-            print '\t', resource_desc[1]
-            print
-            print '\t', 'Available methods:'
+            print(resource_desc[0])
+            print('\t', resource_desc[1])
+            print()
+            print('\t', 'Available methods:')
             for r in resource_methods:
                 method_header = r.__name__ + '('
                 if r._get_args:
@@ -89,8 +89,8 @@ class Client(object):
                 if r.__name__.startswith('delete'):
                     method_desc = 'Corresponding API call: DELETE to ' + r._resource_uri
 
-                print '\t\t', method_header, ' - ', method_desc
-            print
+                print('\t\t', method_header, ' - ', method_desc)
+            print()
 
     def _construct_request(self):
         """

@@ -15,7 +15,7 @@ def main():
     client = Client(api_token=args.apitoken, endpoint=args.endpoint)
     jobs = client.read_jobs()
     for job in jobs:
-        print job['name']
-        print '\tstatus:', job['status']
-        print '\t    id:', job['id']
+        print(job['name'])
+        print('\tstatus:', job['status'])
+        print('\t    id:', job['id'])
 if __name__ == '__main__': main()

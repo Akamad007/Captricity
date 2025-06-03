@@ -34,12 +34,12 @@ def uploadAllImages():
             batchObject.status = status(client,batch_id)
             batchObject.submit = submit(client,batch_id)
             batchObject.success = True   
-            print "Image saved"           
-        except Exception, e:
+            print("Image saved")
+        except Exception as e:
             batchObject.status = str(e)
             batchObject.submit = ""
             batchObject.success = False    
-            print "Big werror"        
+            print("Big werror")
         batchObject.save()
 
 

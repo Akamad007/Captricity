@@ -33,7 +33,7 @@ def add(request, id):
         batchObject.submit = submit(client,batch_id)
         batchObject.success = True
         messages.success(request, "The image was successfully added to batch "+batchObject.name)
-    except Exception, e:
+    except Exception as e:
         batchObject.status = str(e)
         batchObject.submit = ""
         batchObject.success = False
@@ -104,7 +104,7 @@ def addall(request):
         batchObject.submit = submit(client,batch_id)
         batchObject.success = True
         messages.success(request, "All images were successfully added to batch "+batchObject.name+" total images "+str(images.count()))
-    except Exception, e:
+    except Exception as e:
         batchObject.status = str(e)
         batchObject.submit = ""
         batchObject.success = False

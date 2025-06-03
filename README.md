@@ -1,4 +1,6 @@
 # Captricity
+
+This project now requires **Python 3.12**.
  
 Current System
  
@@ -25,8 +27,8 @@ the user via Email.
 Installation
  
 The following tools are needed for the installation and working of this application.  
-Install python pip. Which is a package manager.  
-Using pip install the following packages.  
+Install Python 3.12 and pip (the Python package manager).
+Using pip3 install the following packages.
 Django==1.5 
 django­celery==3.1.10 
 django­celery­email==1.0.4 
@@ -42,13 +44,13 @@ redis as the messaging queue. Celery is being used to run asynchronous tasks.
  Working
 
 To start the application open terminal. 
-Make sure all the packages are installed using pip.  
-Go in the application folder. Run the command “python manage.py runserver “ 
+Make sure all the packages are installed using pip3.
+Go in the application folder. Run the command “python3 manage.py runserver “
 This will start the application.  
-Start a new terminal tab. Run the command “python manage.py celery beat” 
+Start a new terminal tab. Run the command “python3 manage.py celery beat”
 This command will start the celery periodic scheduler. This command queues all the 
 celery periodic tasks. 
-7. Start a new terminal tab. Run the command “ python manage.py celery worker” 
+7. Start a new terminal tab. Run the command “ python3 manage.py celery worker”
 8. This command starts the celery worker and will start executing the tasks queued in the 
 celery scheduler. 
 9. You can start using the application by going to the link localhost:8000. 

@@ -5,18 +5,17 @@ NOTE: Methods which start with an underscore (_) are for internal use only and W
       Do not write your code against them.
 
 """
-import new
 import types
 import random
-import urllib
-import httplib 
-import urlparse
-import traceback
+import urllib.parse
+import http.client as httplib
+from functools import reduce
+from io import IOBase
 import mimetypes
 import json
 from itertools import groupby
 from hashlib import sha256
-from urllib import urlencode
+from urllib.parse import urlencode
 from datetime import datetime
 
 API_TOKEN_HEADER_NAME = 'Captricity-API-Token'
@@ -41,7 +40,7 @@ class Client(object):
         """
         self.api_token = api_token
         self.endpoint = endpoint
-        self.parsed_endpoint = urlparse.urlparse(self.endpoint)
+        self.parsed_endpoint = urllib.parse.urlparse(self.endpoint)
         self.api_version = version 
         schema_url = self.parsed_endpoint.path
         if version: schema_url = schema_url + '?version=' + version
@@ -51,16 +50,16 @@ class Client(object):
         for resource in self.schema['resources']:
             if "GET" in resource['allowed_request_methods']:
                 read_callable = _generate_read_callable(resource['name'], resource['display_name'], resource['arguments'], resource['regex'], resource['doc'], resource['supported'])
-                setattr(self, read_callable.__name__, new.instancemethod(read_callable, self, self.__class__))
+                setattr(self, read_callable.__name__, types.MethodType(read_callable, self))
             if "PUT" in resource['allowed_request_methods']:
                 update_callable = _generate_update_callable(resource['name'], resource['display_name'], resource['arguments'], resource['regex'], resource['doc'], resource['supported'], resource['put_syntaxes'])
-                setattr(self, update_callable.__name__, new.instancemethod(update_callable, self, self.__class__))
+                setattr(self, update_callable.__name__, types.MethodType(update_callable, self))
             if "POST" in resource['allowed_request_methods']:
                 create_callable = _generate_create_callable(resource['name'], resource['display_name'], resource['arguments'], resource['regex'], resource['doc'], resource['supported'], resource['post_syntaxes'], resource['is_action'])
-                setattr(self, create_callable.__name__, new.instancemethod(create_callable, self, self.__class__))
+                setattr(self, create_callable.__name__, types.MethodType(create_callable, self))
             if "DELETE" in resource['allowed_request_methods']:
                 delete_callable = _generate_delete_callable(resource['name'], resource['display_name'], resource['arguments'], resource['regex'], resource['doc'], resource['supported'])
-                setattr(self, delete_callable.__name__, new.instancemethod(delete_callable, self, self.__class__))
+                setattr(self, delete_callable.__name__, types.MethodType(delete_callable, self))
 
     def print_help(self):
         """Prints the api method info to stdout for debugging."""
@@ -150,28 +149,29 @@ class Client(object):
         fields = []
         files = []
         for key, value in data.items():
-            if type(value) == file:
+            if isinstance(value, IOBase):
                 files.append((key, value.name, value.read()))
             else:
                 fields.append((key, value))
         content_type, body = _encode_multipart_formdata(fields, files)
         if self.parsed_endpoint.scheme == 'https':
-            h = httplib.HTTPS(self.parsed_endpoint.netloc)
+            conn = httplib.HTTPSConnection(self.parsed_endpoint.netloc)
         else:
-            h = httplib.HTTP(self.parsed_endpoint.netloc)
-        h.putrequest(method, url)
-        h.putheader('Content-Type', content_type)
-        h.putheader('Content-Length', str(len(body)))
-        h.putheader('Accept', 'application/json')
-        h.putheader('User-Agent', USER_AGENT)
-        h.putheader(API_TOKEN_HEADER_NAME, self.api_token)
+            conn = httplib.HTTPConnection(self.parsed_endpoint.netloc)
+        conn.putrequest(method, url)
+        conn.putheader('Content-Type', content_type)
+        conn.putheader('Content-Length', str(len(body)))
+        conn.putheader('Accept', 'application/json')
+        conn.putheader('User-Agent', USER_AGENT)
+        conn.putheader(API_TOKEN_HEADER_NAME, self.api_token)
         if self.api_version in ['0.1', '0.01a']:
-            h.putheader(API_VERSION_HEADER_NAME, self.api_version)
-        h.endheaders()
-        h.send(body)
-        errcode, errmsg, headers = h.getreply()
-        if errcode not in [200, 202]: raise IOError('Response to %s to URL %s was status code %s: %s' % (method, url, errcode, h.file.read()))
-        return json.loads(h.file.read())
+            conn.putheader(API_VERSION_HEADER_NAME, self.api_version)
+        conn.endheaders()
+        conn.send(body)
+        resp = conn.getresponse()
+        if resp.status not in [200, 202]:
+            raise IOError('Response to %s to URL %s was status code %s: %s' % (method, url, resp.status, resp.read()))
+        return json.loads(resp.read())
 
     def _put_or_post_json(self, method, url, data):
         """
@@ -276,7 +276,7 @@ def _generate_read_callable(name, display_name, arguments, regex, doc, supported
     """Returns a callable which conjures the URL for the resource and GETs a response"""
     def f(self, *args, **kwargs):
         url = self._generate_url(regex, args)
-        if 'params' in kwargs: url += "?" + urllib.urlencode(kwargs['params'])
+        if 'params' in kwargs: url += "?" + urllib.parse.urlencode(kwargs['params'])
         return self._get_data(url, accept=(kwargs.get('accept')))
     f.__name__ = str('read_%s' % name)
     f.__doc__ = doc
@@ -292,7 +292,7 @@ def _generate_update_callable(name, display_name, arguments, regex, doc, support
     """Returns a callable which conjures the URL for the resource and PUTs data"""
     def f(self, *args, **kwargs):
         for key, value in args[-1].items():
-            if type(value) == file:
+            if isinstance(value, IOBase):
                 return self._put_or_post_multipart('PUT', self._generate_url(regex, args[:-1]), args[-1])
         return self._put_or_post_json('PUT', self._generate_url(regex, args[:-1]), args[-1])
     f.__name__ = str('update_%s' % name)
@@ -309,7 +309,7 @@ def _generate_create_callable(name, display_name, arguments, regex, doc, support
     """Returns a callable which conjures the URL for the resource and POSTs data"""
     def f(self, *args, **kwargs):
         for key, value in args[-1].items():
-            if type(value) == file:
+            if isinstance(value, IOBase):
                 return self._put_or_post_multipart('POST', self._generate_url(regex, args[:-1]), args[-1])
         return self._put_or_post_json('POST', self._generate_url(regex, args[:-1]), args[-1])
     if is_action:

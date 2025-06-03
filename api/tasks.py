@@ -18,7 +18,7 @@ def uploadAllImages():
     
         batch_id = create_or_get_batch(client,BATCH_NAME)        
         documents = client.read_documents()        
-        document_id = filter(lambda x: x['name'] == CAPTRICITY_TEMPLATE_NAME, documents).pop()['id']
+        document_id = [x for x in documents if x["name"] == CAPTRICITY_TEMPLATE_NAME].pop()['id']
         client.update_batch(batch_id, { 'documents': document_id, 'name': BATCH_NAME })
         batchObject = ApiBatch.objects.create(name=BATCH_NAME,user = user)      
         batchObject.save()

@@ -28,14 +28,14 @@ Installation
  
 The following tools are needed for the installation and working of this application.  
 Install Python 3.12 and pip (the Python package manager).
-Using pip3 install the following packages.
-Django==1.5 
-django­celery==3.1.10 
-django­celery­email==1.0.4 
-django­debug­toolbar==1.3.2 
-django­redis==4.2.0 
-django­reset==0.2.0 
-redis==2.10.3 
+Using pip3 install the following packages or run `pip3 install -r requirements.txt`.
+Django==5.2.1
+celery==5.5.3
+django-celery-email==3.0.0
+django-debug-toolbar==5.2.0
+django-redis==5.4.0
+django-reset==0.2.0
+redis==6.2.0
  
 Make sure you have the latest redis server instance running on the default port. We are using 
 redis as the messaging queue. Celery is being used to run asynchronous tasks.  

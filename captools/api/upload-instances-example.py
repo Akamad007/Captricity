@@ -12,7 +12,7 @@ def main():
     parser.add_argument('--endpoint', required=True, help='the URL to the API definition resource, like https://shreddr.captricity.com/api/backbone/schema')
     parser.add_argument('--apitoken', required=True, help='the api token associated with your Captricity account')
     parser.add_argument('--job', required=True, type=int, help='the ID number for the job resource')
-    parser.add_argument('image', type=file, nargs='+', help='image files which you would like to upload')
+    parser.add_argument('image', type=argparse.FileType('rb'), nargs='+', help='image files which you would like to upload')
 
     args = parser.parse_args()
 

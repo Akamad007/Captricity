@@ -43,9 +43,11 @@ def signup(request):
                 userMail = signupForm['email']
                 password = signupForm['password']
                 user = User.objects.create_user(userName, userMail, password)
-                user.save() 
-                                       
-                login(request)
+                user.save()
+
+                user = authenticate(username=userName, password=password)
+                if user is not None:
+                    django_login(request, user)
                 messages.success(request, "User account created succesfully")
                 return HttpResponseRedirect('/home')
             else:
@@ -55,3 +57,4 @@ def signup(request):
         return render(request,"login/signup.html",{"signupForm":signupForm})
     else:
         return HttpResponseRedirect("/home/")
+

@@ -5,3 +5,4 @@ django-debug-toolbar==5.2.0
 django-redis==5.4.0
 Pillow
 redis==6.2.0
+coverage

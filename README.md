@@ -53,4 +53,13 @@ celery periodic tasks.
 7. Start a new terminal tab. Run the command “ python3 manage.py celery worker”
 8. This command starts the celery worker and will start executing the tasks queued in the 
 celery scheduler. 
-9. You can start using the application by going to the link localhost:8000. 
+9. You can start using the application by going to the link localhost:8000.
+
+## Running Tests
+
+To run the test suite with code coverage enabled execute:
+
+```bash
+coverage run manage.py test
+coverage report
+```

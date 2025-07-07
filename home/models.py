@@ -8,7 +8,14 @@ import random, string
 def get_photo_storage_path(photo_obj, filename):    
      
     random_string = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(10))
-    storage_path = 'img/home/' + random_string +"_"+hashlib.sha1(str(photo_obj.user.id)).hexdigest()  +'_' + filename
+    storage_path = (
+        'img/home/'
+        + random_string
+        + "_"
+        + hashlib.sha1(str(photo_obj.user.id).encode('utf-8')).hexdigest()
+        + "_"
+        + filename
+    )
     return storage_path 
 
 

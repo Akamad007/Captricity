@@ -1,3 +1,4 @@
+# flake8: noqa
 """
 This file demonstrates writing tests using the unittest module. These will pass
 when you run "manage.py test".
@@ -21,18 +22,18 @@ class ApiUtilsTest(TestCase):
         from api.views import get_random_batch_name
         from unittest.mock import patch
 
-        with patch('api.views.random.choice', return_value='B'):
-            name = get_random_batch_name('PREFIX')
+        with patch("api.views.random.choice", return_value="B"):
+            name = get_random_batch_name("PREFIX")
 
-        self.assertTrue(name.startswith('PREFIX'))
-        self.assertEqual(name, 'PREFIX' + 'B' * 10)
+        self.assertTrue(name.startswith("PREFIX"))
+        self.assertEqual(name, "PREFIX" + "B" * 10)
 
     def test_status_errors_raise(self):
         from api.views import status
 
         class DummyClient:
             def read_batch_readiness(self, batch_id):
-                return {'errors': ['boom'], 'status': 'bad'}
+                return {"errors": ["boom"], "status": "bad"}
 
         with self.assertRaises(Exception):
             status(DummyClient(), 1)
@@ -42,6 +43,6 @@ class ApiUtilsTest(TestCase):
 
         class DummyClient:
             def read_batch_readiness(self, batch_id):
-                return {'errors': [], 'status': 'ready'}
+                return {"errors": [], "status": "ready"}
 
-        self.assertEqual(status(DummyClient(), 1), 'ready')
+        self.assertEqual(status(DummyClient(), 1), "ready")

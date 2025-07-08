@@ -1,3 +1,4 @@
+# flake8: noqa
 """
 WSGI config for Captricity project.
 
@@ -25,6 +26,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Captricity.settings")
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.
 from django.core.wsgi import get_wsgi_application
+
 application = get_wsgi_application()
 
 # Apply WSGI middleware here.

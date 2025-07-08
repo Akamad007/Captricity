@@ -6,3 +6,5 @@ django-redis==5.4.0
 Pillow
 redis==6.2.0
 coverage
+black
+flake8

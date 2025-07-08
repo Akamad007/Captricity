@@ -63,3 +63,9 @@ To run the test suite with code coverage enabled execute:
 coverage run manage.py test
 coverage report
 ```
+
+## Continuous Integration
+
+GitHub Actions automatically run linting, formatting checks and the test suite
+with coverage for every push and pull request. See
+`.github/workflows/ci.yml` for the configuration details.
